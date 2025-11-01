@@ -1,11 +1,11 @@
-# 🍽️ Proyecto Menú Digital
+#  Proyecto Menú Digital
 
 Sistema de gestión de menú digital con conexión a **Neon PostgreSQL**, desarrollado en **Node.js + Express** (backend) y **Angular** (frontend).  
 El entorno se ejecuta mediante **Docker Compose** para garantizar portabilidad y despliegue rápido.
 
 ---
 
-## 🚀 Incremento 1 — CRUD de Categorías
+##  Incremento 1 — CRUD de Categorías
 
 **Rol:** Developer (DEVS)  
 **Responsable:** Steven Duran  
@@ -13,7 +13,7 @@ El entorno se ejecuta mediante **Docker Compose** para garantizar portabilidad y
 
 ---
 
-### 🧩 Funcionalidades implementadas
+###  Funcionalidades implementadas
 
 - Crear categorías (POST)
 - Listar categorías (GET)
@@ -24,8 +24,8 @@ El entorno se ejecuta mediante **Docker Compose** para garantizar portabilidad y
 
 ---
 
-## ⚙️ Configuración inicial
+##  Configuración inicial
 
-### 1️⃣ Instalar dependencias
+### 1️ Instalar dependencias
 ```bash
 npm install
