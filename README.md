@@ -9,7 +9,7 @@ Interfaz administrativa desarrollada en **Angular 17+** para gestionar menús di
 
 > Sitúate dentro de `men--digital-main/` para ejecutar cualquier comando de desarrollo.
 
-## Funcionalidades incluidas
+##  Funcionalidades incluidas
 
 - **Inicio de sesión** con selección de empresa y manejo de sesión mediante JWT (mock en esta versión).
 - **Panel de control** con métricas generales de categorías, productos y usuarios.
@@ -63,7 +63,7 @@ El servidor de Angular se iniciará en `http://localhost:4200`. Para cambiar el 
 - `npm run build`: genera la versión de producción en `dist/`.
 - `npm test`: ejecuta las pruebas unitarias configuradas con Karma/Jasmine.
 
-## ⚙️ Configuración de entornos
+##  Configuración de entornos
 
 El frontend toma la URL base del backend desde `src/environments/environment*.ts`:
 
