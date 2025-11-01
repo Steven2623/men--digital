@@ -3,7 +3,7 @@ export const environment = {
   /**
    * URL base del backend. Actualiza este valor cuando el API esté disponible.
    */
-  apiBaseUrl: 'http://localhost:3000/api',
+  apiBaseUrl: 'http://localhost:8080/api',
   /**
    * Permite trabajar con datos simulados mientras el backend se integra.
    * Cambia a `false` cuando los endpoints estén listos.

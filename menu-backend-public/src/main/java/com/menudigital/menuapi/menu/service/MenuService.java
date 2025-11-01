@@ -1,0 +1,1 @@
+package com.menudigital.menuapi.menu.service; import com.menudigital.menuapi.menu.domain.Menu; import java.util.*; public interface MenuService{ java.util.List<Menu> byCompany(UUID companyId); Menu get(UUID id); Menu create(Menu m); Menu update(UUID id, Menu m); void delete(UUID id);}
