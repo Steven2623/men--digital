@@ -1,15 +1,15 @@
-# 🍽️ Menú Digital — Incremento Frontend
+#  Menú Digital — Incremento Frontend
 
 Interfaz administrativa desarrollada en **Angular 17+** para gestionar menús digitales multiempresa. Este incremento se centra en las vistas del administrador y deja listos los puntos de integración con el backend (Spring/Node) y la base de datos Neon PostgreSQL.
 
-## 📦 Contenido del repositorio
+##  Contenido del repositorio
 
 - `men--digital-main/`: código fuente de la aplicación Angular, Docker y scripts auxiliares.
 - `package.json`: marcador del workspace raíz (no contiene dependencias).
 
 > Sitúate dentro de `men--digital-main/` para ejecutar cualquier comando de desarrollo.
 
-## ✨ Funcionalidades incluidas
+##  Funcionalidades incluidas
 
 - **Inicio de sesión** con selección de empresa y manejo de sesión mediante JWT (mock en esta versión).
 - **Panel de control** con métricas generales de categorías, productos y usuarios.
@@ -19,7 +19,7 @@ Interfaz administrativa desarrollada en **Angular 17+** para gestionar menús di
 - **Gestión de usuarios**: creación de administradores/usuarios, asignación de empresa y control de estado.
 - **Gestión de empresas**: mantenimiento del catálogo de negocios (RUC, razón social, logo, etc.).
 
-## 🗂️ Estructura relevante
+##  Estructura relevante
 
 ```
 src/
@@ -40,7 +40,7 @@ Mientras `environment.useMockData = true`, puedes acceder con las siguientes cre
 
 > Cambia `useMockData` a `false` cuando el backend esté operativo. Todos los servicios HTTP (`AuthService`, `CategoryService`, etc.) ya apuntan a los endpoints REST esperados.
 
-## 🚀 Puesta en marcha
+##  Puesta en marcha
 
 ### Requisitos
 
@@ -63,7 +63,7 @@ El servidor de Angular se iniciará en `http://localhost:4200`. Para cambiar el 
 - `npm run build`: genera la versión de producción en `dist/`.
 - `npm test`: ejecuta las pruebas unitarias configuradas con Karma/Jasmine.
 
-## ⚙️ Configuración de entornos
+##  Configuración de entornos
 
 El frontend toma la URL base del backend desde `src/environments/environment*.ts`:
 
@@ -78,7 +78,7 @@ export const environment = {
 - Actualiza `apiBaseUrl` con el endpoint del backend.
 - Cambia `useMockData` a `false` para consumir datos reales.
 
-## 🛣️ Próximas implementaciones
+##  Próximas implementaciones
 
 1. Conectar los servicios Angular con los endpoints del backend (Spring Security + JWT).
 2. Añadir interceptores para adjuntar el token JWT en cada petición HTTP.
