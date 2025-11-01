@@ -5,7 +5,7 @@ El entorno se ejecuta mediante **Docker Compose** para garantizar portabilidad y
 
 ---
 
-## 🚀 Incremento 1 — CRUD de Categorías
+##  Incremento 1 — CRUD de Categorías
 
 **Rol:** Developer (DEVS)  
 **Responsable:** Steven Duran  
@@ -13,7 +13,7 @@ El entorno se ejecuta mediante **Docker Compose** para garantizar portabilidad y
 
 ---
 
-### 🧩 Funcionalidades implementadas
+###  Funcionalidades implementadas
 
 - Crear categorías (POST)
 - Listar categorías (GET)
@@ -26,6 +26,6 @@ El entorno se ejecuta mediante **Docker Compose** para garantizar portabilidad y
 
 ## ⚙️ Configuración inicial
 
-### 1️⃣ Instalar dependencias
+### 1️ Instalar dependencias
 ```bash
 npm install
