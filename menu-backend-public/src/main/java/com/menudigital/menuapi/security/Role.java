@@ -1,0 +1,1 @@
+package com.menudigital.menuapi.security; public enum Role { ADMIN, USER }

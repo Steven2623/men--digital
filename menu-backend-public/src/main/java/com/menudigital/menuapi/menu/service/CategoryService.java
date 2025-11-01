@@ -1,0 +1,1 @@
+package com.menudigital.menuapi.menu.service; import com.menudigital.menuapi.menu.domain.Category; import java.util.*; public interface CategoryService{ java.util.List<Category> byCompany(UUID companyId); Category get(UUID id); Category create(Category c); Category update(UUID id, Category c); void delete(UUID id);}
