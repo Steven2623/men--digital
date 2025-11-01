@@ -1,4 +1,4 @@
-# 🍽️ Proyecto Menú Digital
+#  Proyecto Menú Digital
 
 Sistema de gestión de menú digital con conexión a **Neon PostgreSQL**, desarrollado en **Node.js + Express** (backend) y **Angular** (frontend).  
 El entorno se ejecuta mediante **Docker Compose** para garantizar portabilidad y despliegue rápido.
