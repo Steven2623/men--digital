@@ -23,32 +23,26 @@ export class AuthService {
   readonly currentUser = this.currentUserSignal.asReadonly();
   readonly isAuthenticated = computed(() => !!this.currentUserSignal());
 
-  login(credentials: AuthCredentials) {
-    if (this.shouldUseMock()) {
-      const validUser = this.db
-        .users()
-        .find(
-          (user) =>
-            user.username === credentials.username &&
-            user.companyId === credentials.companyId &&
-            user.active
-        );
+login(credentials: AuthCredentials) {
+  return this.http.post<any>(`${this.baseUrl}/login`, credentials).pipe(
+    map((response) => {
+      // el token y el usuario vienen dentro de "data"
+      const data = response.data;
 
-      const passwordMatches = credentials.password === 'admin123';
+      const token = data.token;
+      const user = {
+        id: data.userId,
+        email: data.email,
+        role: data.id_rol?.nombre,
+        companyId: data.companyId,
+      } as User;
 
-      if (!validUser || !passwordMatches) {
-        return throwError(() => new Error('Credenciales inválidas'));
-      }
+      this.persistSession(token, user);
+      return user;
+    })
+  );
+}
 
-      this.persistSession('mock-token', validUser);
-      return of(validUser).pipe(delay(150));
-    }
-
-    return this.http.post<AuthResponse>(`${this.baseUrl}/login`, credentials).pipe(
-      tap((response) => this.persistSession(response.token, response.user)),
-      map((response) => response.user)
-    );
-  }
 
   logout() {
     if (this.canUseBrowserStorage()) {

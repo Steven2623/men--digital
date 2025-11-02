@@ -4,9 +4,10 @@ import jakarta.validation.Valid; import lombok.RequiredArgsConstructor; import o
 @RestController @RequestMapping("/api/auth") @RequiredArgsConstructor
 public class AuthController {
   private final AuthenticationManager am; private final UserDetailsService uds; private final JwtService jwt; private final UserRepository ur;
-  @PostMapping("/login") public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody AuthRequest req){
-    am.authenticate(new UsernamePasswordAuthenticationToken(req.getUsername(),req.getPassword()));
-    var ud=uds.loadUserByUsername(req.getUsername()); var token=jwt.generateToken(ud); var u=ur.findByUsername(req.getUsername()).orElseThrow();
-    return ResponseEntity.ok(ApiResponse.ok(new AuthResponse(token,u.getId(),u.getUsername(),u.getFullName(),u.getRole(),u.getCompany().getId())));
+  @PostMapping("/login") 
+  public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody AuthRequest req){
+    am.authenticate(new UsernamePasswordAuthenticationToken(req.getEmail(),req.getPassword()));
+    var ud=uds.loadUserByUsername(req.getEmail()); var token=jwt.generateToken(ud); var u=ur.findByEmail(req.getEmail()).orElseThrow();
+    return ResponseEntity.ok(ApiResponse.ok(new AuthResponse(token,u.getId(),u.getEmail(),u.getRole(),u.getCompany().getId())));
   }
 }

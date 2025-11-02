@@ -4,7 +4,7 @@ import { User } from './user.model';
  * Datos necesarios para el inicio de sesión.
  */
 export interface AuthCredentials {
-  username: string;
+  email: string;
   password: string;
   /**
    * Empresa seleccionada en el flujo de registro/login.

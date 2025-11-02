@@ -29,8 +29,8 @@ export class UserManagementComponent {
   readonly feedbackMessage = signal<string | null>(null);
 
   readonly userForm = this.fb.nonNullable.group({
-    fullName: ['', [Validators.required, Validators.maxLength(80)]],
-    username: ['', [Validators.required, Validators.pattern(EMAIL_REGEX)]],
+    username: ['', [Validators.required, Validators.maxLength(80)]],
+    email: ['', [Validators.required, Validators.pattern(EMAIL_REGEX)]],
     role: this.fb.nonNullable.control<UserRole>('USER', Validators.required),
     companyId: ['', Validators.required],
     active: [true],
@@ -53,7 +53,7 @@ export class UserManagementComponent {
   edit(user: User) {
     this.selectedUserId.set(user.id);
     this.userForm.patchValue({
-      fullName: user.fullName,
+      email: user.email,
       username: user.username,
       role: user.role,
       companyId: user.companyId,
@@ -73,7 +73,7 @@ export class UserManagementComponent {
   cancelEdit() {
     this.selectedUserId.set(null);
     this.userForm.reset({
-      fullName: '',
+      email: '',
       username: '',
       role: 'USER',
       companyId: this.authService.currentUser()?.companyId ?? '',
