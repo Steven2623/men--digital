@@ -9,7 +9,7 @@ export type UserRole = 'ADMIN' | 'USER';
 export interface User {
   id: string;
   username: string;
-  fullName: string;
+  email: string;
   role: UserRole;
   companyId: string;
   active: boolean;

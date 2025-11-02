@@ -112,24 +112,24 @@ export class InMemoryDatabaseService {
   private readonly usersSignal = signal<User[]>([
     {
       id: 'user-admin-001',
-      username: 'admin@saboresdelmar.com',
-      fullName: 'Administrador Sabores',
+      email: 'admin@saboresdelmar.com',
+      username: 'Administrador Sabores',
       role: 'ADMIN',
       companyId: 'empresa-001',
       active: true
     },
     {
       id: 'user-001',
-      username: 'caja@saboresdelmar.com',
-      fullName: 'Usuario Caja',
+      email: 'caja@saboresdelmar.com',
+      username: 'Usuario Caja',
       role: 'USER',
       companyId: 'empresa-001',
       active: true
     },
     {
       id: 'user-admin-002',
-      username: 'admin@aromaandino.com',
-      fullName: 'Administrador Aroma',
+      email: 'admin@aromaandino.com',
+      username: 'Administrador Aroma',
       role: 'ADMIN',
       companyId: 'empresa-002',
       active: true

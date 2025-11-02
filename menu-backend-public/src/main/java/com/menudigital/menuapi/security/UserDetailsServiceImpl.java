@@ -3,8 +3,8 @@ import lombok.RequiredArgsConstructor; import org.springframework.security.core.
 @Service @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
   private final UserRepository userRepository;
-  @Override public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    var u=userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found"));
-    return new User(u.getUsername(),u.getPasswordHash(),u.isActive(),true,true,true,List.of(new SimpleGrantedAuthority("ROLE_"+u.getRole().name())));
+  @Override public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    var u=userRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("User not found"));
+    return new User(u.getEmail(),u.getPasswordHash(),u.isActive(),true,true,true,List.of(new SimpleGrantedAuthority("ROLE_" + u.getRole().getNombre())));
   }
 }

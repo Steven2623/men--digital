@@ -9,8 +9,13 @@
     <form [formGroup]="loginForm" (ngSubmit)="login()" class="login__form">
       <label>
         <span>Correo electrónico</span>
-        <input type="email" formControlName="username" placeholder="admin@empresa.com" />
-        <small *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+        <input
+            type="email"
+            formControlName="email"
+            placeholder="Correo electrónico"
+            
+          />
+        <small *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
           Ingresa un correo válido.
         </small>
       </label>
