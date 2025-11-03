@@ -3,13 +3,13 @@ import com.menudigital.menuapi.menu.domain.Company;
 import jakarta.persistence.*; import lombok.*; import org.hibernate.annotations.CreationTimestamp; import org.hibernate.annotations.UpdateTimestamp;
 import java.time.Instant; import java.util.UUID;
 @Entity @Table(name="usuarios") @Data @Builder @NoArgsConstructor @AllArgsConstructor
+@Entity @Table(name="usuarios") @Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class UserEntity {
   @Id @GeneratedValue(strategy=GenerationType.UUID) private UUID id;
   @Column(name="nombre",nullable=false,unique=true,length=60) private String username;
   @Column(name="contrasena",nullable=false) private String passwordHash;
   @Column(name="correo",nullable=false,length=120) private String email;
-  @Enumerated(EnumType.STRING) 
-  @ManyToOne(optional=false) 
+  @ManyToOne(optional=false)
   @JoinColumn(name = "role_id")
   private Role role;
   @ManyToOne(optional=false) 

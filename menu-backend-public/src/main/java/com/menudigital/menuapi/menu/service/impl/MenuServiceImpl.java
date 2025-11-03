@@ -1,11 +1,54 @@
 package com.menudigital.menuapi.menu.service.impl;
-import com.menudigital.menuapi.menu.domain.Menu; import com.menudigital.menuapi.menu.repo.MenuRepository; import com.menudigital.menuapi.menu.service.MenuService; import lombok.RequiredArgsConstructor; import org.springframework.stereotype.Service; import org.springframework.transaction.annotation.Transactional; import java.util.*;
-@Service @RequiredArgsConstructor
+
+import com.menudigital.menuapi.menu.domain.Menu;
+import com.menudigital.menuapi.menu.repo.MenuRepository;
+import com.menudigital.menuapi.menu.service.MenuService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
 public class MenuServiceImpl implements MenuService {
-  private final MenuRepository repo;
-  public java.util.List<Menu> byCompany(UUID companyId){ return repo.findByCompanyIdOrderByNameAsc(companyId); }
-  public Menu get(UUID id){ return repo.findById(id).orElseThrow(); }
-  @Transactional public Menu create(Menu m){ return repo.save(m); }
-  @Transactional public Menu update(UUID id, Menu m){ var db=get(id); db.setName(m.getName()); db.setActive(m.isActive()); db.setCompany(m.getCompany()); return repo.save(db); }
-  public void delete(UUID id){ repo.deleteById(id); }
+
+    private final MenuRepository repository;
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Menu> list(UUID companyId) {
+        if (companyId != null) {
+            return repository.findByCompanyIdOrderByNameAsc(companyId);
+        }
+        return repository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Menu get(UUID id) {
+        return repository.findById(id).orElseThrow();
+    }
+
+    @Override
+    @Transactional
+    public Menu create(Menu menu) {
+        return repository.save(menu);
+    }
+
+    @Override
+    @Transactional
+    public Menu update(UUID id, Menu menu) {
+        var existing = get(id);
+        existing.setName(menu.getName());
+        existing.setActive(menu.isActive());
+        existing.setCompany(menu.getCompany());
+        return repository.save(existing);
+    }
+
+    @Override
+    public void delete(UUID id) {
+        repository.deleteById(id);
+    }
 }

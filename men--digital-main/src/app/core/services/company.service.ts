@@ -59,6 +59,6 @@ export class CompanyService {
   }
 
   private shouldUseMock() {
-    return this.useMockData || typeof window === 'undefined';
+    return this.useMockData;
   }
 }

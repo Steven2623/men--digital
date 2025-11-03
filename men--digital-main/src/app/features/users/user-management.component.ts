@@ -4,8 +4,9 @@ import { FormBuilder, ReactiveFormsModule, ValidatorFn, Validators } from '@angu
 
 import { AuthService } from '../../core/services/auth.service';
 import { CompanyService } from '../../core/services/company.service';
+import { RoleService } from '../../core/services/role.service';
 import { UserService } from '../../core/services/user.service';
-import { User, UserRole } from '../../core/models/user.model';
+import { User } from '../../core/models/user.model';
 import { EMAIL_REGEX } from '../../core/constants/validation.constants';
 
 @Component({
@@ -20,9 +21,11 @@ export class UserManagementComponent {
   private readonly userService = inject(UserService);
   private readonly companyService = inject(CompanyService);
   private readonly authService = inject(AuthService);
+  private readonly roleService = inject(RoleService);
 
   readonly users = this.userService.users;
   readonly companies = this.companyService.companies;
+  readonly roles = this.roleService.roles;
 
   readonly selectedUserId = signal<string | null>(null);
   readonly isSaving = signal(false);
@@ -31,7 +34,7 @@ export class UserManagementComponent {
   readonly userForm = this.fb.nonNullable.group({
     username: ['', [Validators.required, Validators.maxLength(80)]],
     email: ['', [Validators.required, Validators.pattern(EMAIL_REGEX)]],
-    role: this.fb.nonNullable.control<UserRole>('USER', Validators.required),
+    role: this.fb.nonNullable.control('', Validators.required),
     companyId: ['', Validators.required],
     active: [true],
     password: this.fb.nonNullable.control('', [])
@@ -41,6 +44,12 @@ export class UserManagementComponent {
     const companyId = this.authService.currentUser()?.companyId;
     this.companyService.load().subscribe();
     this.userService.load(companyId).subscribe();
+    this.roleService.load().subscribe((roles) => {
+      const roleControl = this.userForm.get('role');
+      if (!this.selectedUserId() && roles.length && !roleControl?.value) {
+        roleControl?.setValue(roles[0].nombre);
+      }
+    });
 
     if (companyId) {
       this.userForm.get('companyId')?.setValue(companyId);
@@ -53,6 +62,7 @@ export class UserManagementComponent {
   edit(user: User) {
     this.selectedUserId.set(user.id);
     this.userForm.patchValue({
+      email: user.email,
       email: user.email,
       username: user.username,
       role: user.role,
@@ -74,8 +84,9 @@ export class UserManagementComponent {
     this.selectedUserId.set(null);
     this.userForm.reset({
       email: '',
+      email: '',
       username: '',
-      role: 'USER',
+      role: this.roles()[0]?.nombre ?? '',
       companyId: this.authService.currentUser()?.companyId ?? '',
       active: true,
       password: ''

@@ -70,6 +70,6 @@ export class MenuService {
   }
 
   private shouldUseMock() {
-    return this.useMockData || typeof window === 'undefined';
+    return this.useMockData;
   }
 }

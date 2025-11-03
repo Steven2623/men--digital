@@ -25,8 +25,4 @@ async function testConnection() {
   }
 }
 
-<<<<<<< HEAD
-// testConnection(); // 👈 Comentá o borra esta línea si ya no la necesitás
-=======
 // testConnection(); // Comentá o borra esta línea si ya no la necesitás
->>>>>>> main

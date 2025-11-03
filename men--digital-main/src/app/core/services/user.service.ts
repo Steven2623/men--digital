@@ -64,6 +64,6 @@ export class UserService {
   }
 
   private shouldUseMock() {
-    return this.useMockData || typeof window === 'undefined';
+    return this.useMockData;
   }
 }

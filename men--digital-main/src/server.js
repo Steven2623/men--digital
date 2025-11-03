@@ -26,11 +26,7 @@ app.get("/api/categorias", async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
-// ➕ Agregar una nueva categoría
-=======
 // Agregar una nueva categoría
->>>>>>> main
 app.post("/api/categorias", async (req, res) => {
   try {
     const { nombre, descripcion } = req.body;
@@ -41,20 +37,12 @@ app.post("/api/categorias", async (req, res) => {
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
-<<<<<<< HEAD
-    console.error("❌ Error al agregar categoría:", err.message);
-=======
     console.error("Error al agregar categoría:", err.message);
->>>>>>> main
     res.status(500).json({ error: "Error al agregar categoría" });
   }
 });
 
-<<<<<<< HEAD
-// ✏️ Actualizar una categoría
-=======
 // Actualizar una categoría
->>>>>>> main
 app.put("/api/categorias/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -70,20 +58,12 @@ app.put("/api/categorias/:id", async (req, res) => {
     }
     res.json(result.rows[0]);
   } catch (err) {
-<<<<<<< HEAD
-    console.error("❌ Error al actualizar categoría:", err.message);
-=======
     console.error("Error al actualizar categoría:", err.message);
->>>>>>> main
     res.status(500).json({ error: "Error al actualizar categoría" });
   }
 });
 
-<<<<<<< HEAD
-// 🗑️ Eliminar una categoría
-=======
 // Eliminar una categoría
->>>>>>> main
 app.delete("/api/categorias/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -93,24 +73,11 @@ app.delete("/api/categorias/:id", async (req, res) => {
     }
     res.json({ mensaje: "Categoría eliminada correctamente" });
   } catch (err) {
-<<<<<<< HEAD
-    console.error("❌ Error al eliminar categoría:", err.message);
-=======
     console.error("Error al eliminar categoría:", err.message);
->>>>>>> main
     res.status(500).json({ error: "Error al eliminar categoría" });
   }
 });
 
-<<<<<<< HEAD
-// 🚀 Iniciar servidor
-console.clear();
-console.log("🔄 Iniciando servidor...");
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`✅ Servidor escuchando en http://localhost:${PORT}`);
-=======
 // Iniciar servidor
 console.clear();
 console.log("Iniciando servidor...");
@@ -118,5 +85,4 @@ console.log("Iniciando servidor...");
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
->>>>>>> main
 });
