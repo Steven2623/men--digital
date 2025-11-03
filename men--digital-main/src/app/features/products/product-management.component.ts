@@ -39,16 +39,18 @@ export class ProductManagementComponent {
   readonly selectedProductId = signal<string | null>(null);
   readonly isSaving = signal(false);
   readonly feedbackMessage = signal<string | null>(null);
+  readonly inactiveCategoryNotice = signal<string | null>(null);
 
   /** Formulario principal: valida longitudes y selección de catálogos obligatorios. */
   readonly productForm = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.maxLength(80)]],
-    description: ['', [Validators.required, Validators.maxLength(240)]],
+    name: ['', [Validators.required, Validators.maxLength(120)]],
+    description: ['', [Validators.required, Validators.maxLength(800)]],
     price: [0, [Validators.required, Validators.min(0.01)]],
     imageUrl: [
       '',
       [Validators.required, Validators.pattern(/^(https?:\/\/).+/)]
     ],
+    active: [true],
     categoryId: ['', Validators.required],
     menuIds: this.fb.nonNullable.control<string[]>([], {
       validators: (control) =>
@@ -106,6 +108,7 @@ export class ProductManagementComponent {
       description: product.description,
       price: product.price,
       imageUrl: product.imageUrl,
+      active: product.active,
       categoryId: product.categoryId,
       menuIds: [...product.menuIds]
     });
@@ -118,6 +121,7 @@ export class ProductManagementComponent {
       description: '',
       price: 0,
       imageUrl: '',
+      active: true,
       categoryId: '',
       menuIds: []
     });
@@ -192,6 +196,8 @@ export class ProductManagementComponent {
 
   /** Verifica reglas comunes antes de enviar información al backend. */
   private isFormReadyForSubmit() {
+    this.inactiveCategoryNotice.set(null);
+
     if (this.productForm.invalid) {
       this.productForm.markAllAsTouched();
       return false;
@@ -201,14 +207,10 @@ export class ProductManagementComponent {
       (category) => category.id === this.categoryIdControl.value
     );
 
-    if (!selectedCategory?.active) {
-      const existingErrors = this.categoryIdControl.errors ?? {};
-      this.categoryIdControl.setErrors({
-        ...existingErrors,
-        inactiveCategory: true
-      });
-      this.categoryIdControl.markAsTouched();
-      return false;
+    if (selectedCategory && !selectedCategory.active) {
+      this.inactiveCategoryNotice.set(
+        'La categoría seleccionada está inactiva. Se enviará la actualización para que el backend la procese.'
+      );
     }
 
     return true;
@@ -251,17 +253,11 @@ export class ProductManagementComponent {
       : undefined;
 
     if (!selectedId || category?.active) {
-      this.removeInactiveCategoryError();
+      this.inactiveCategoryNotice.set(null);
+    } else {
+      this.inactiveCategoryNotice.set(
+        'La categoría seleccionada está inactiva. Se enviará la actualización para que el backend la procese.'
+      );
     }
-  }
-
-  private removeInactiveCategoryError() {
-    const errors = this.categoryIdControl.errors;
-    if (!errors?.['inactiveCategory']) {
-      return;
-    }
-
-    const { inactiveCategory, ...rest } = errors;
-    this.categoryIdControl.setErrors(Object.keys(rest).length ? rest : null);
   }
 }

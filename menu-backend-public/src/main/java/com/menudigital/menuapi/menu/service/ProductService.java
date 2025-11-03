@@ -1,1 +1,15 @@
-package com.menudigital.menuapi.menu.service; import com.menudigital.menuapi.menu.domain.Product; import org.springframework.data.domain.*; import java.util.*; public interface ProductService{ Page<Product> list(Pageable p); java.util.List<Product> byCategory(UUID categoryId); java.util.List<Product> byCompany(UUID companyId); Product get(UUID id); Product create(Product p); Product update(UUID id, Product p); void delete(UUID id);}
+package com.menudigital.menuapi.menu.service;
+
+import com.menudigital.menuapi.menu.domain.Product;
+import com.menudigital.menuapi.menu.dto.ProductRequest;
+
+import java.util.List;
+import java.util.UUID;
+
+public interface ProductService {
+    List<Product> list(UUID companyId, UUID categoryId, UUID menuId);
+    Product get(UUID id);
+    Product create(ProductRequest request);
+    Product update(UUID id, ProductRequest request);
+    void delete(UUID id);
+}

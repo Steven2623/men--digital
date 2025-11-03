@@ -97,6 +97,6 @@ export class ProductService {
   }
 
   private shouldUseMock() {
-    return this.useMockData || typeof window === 'undefined';
+    return this.useMockData;
   }
 }
