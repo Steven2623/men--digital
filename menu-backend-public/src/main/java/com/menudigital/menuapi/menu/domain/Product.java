@@ -7,6 +7,7 @@ public class Product {
   @Column(nullable=false) private String name;
   @Column(length=800) private String description;
   @Column(nullable=false,precision=10,scale=2) private BigDecimal price;
+  @Column(nullable=false,columnDefinition="boolean default true") @Builder.Default private boolean active=true;
   private String imageUrl;
   @ManyToOne(optional=false) private Category category;
   @ManyToOne(optional=false) private Company company;

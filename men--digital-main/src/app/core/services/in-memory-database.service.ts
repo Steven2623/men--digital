@@ -4,7 +4,135 @@ import { Category } from '../models/category.model';
 import { Company } from '../models/company.model';
 import { Menu } from '../models/menu.model';
 import { Product } from '../models/product.model';
+import { Role } from '../models/role.model';
 import { User } from '../models/user.model';
+import { environment } from '../../../environments/environment';
+
+const MOCK_COMPANIES: Company[] = [
+  {
+    id: 'empresa-001',
+    taxId: 'RUC-001',
+    businessName: 'Restaurante S.A.',
+    commercialName: 'Sabores del Mar',
+    email: 'contacto@saboresdelmar.com',
+    phone: '+503 7890 1111',
+    logoUrl: 'https://placehold.co/120x120?text=Sabores'
+  },
+  {
+    id: 'empresa-002',
+    taxId: 'RUC-002',
+    businessName: 'Cafetería S.R.L.',
+    commercialName: 'Aroma Andino',
+    email: 'hola@aromaandino.com',
+    phone: '+503 7456 3344',
+    logoUrl: 'https://placehold.co/120x120?text=Aroma'
+  }
+];
+
+const MOCK_MENUS: Menu[] = [
+  {
+    id: 'menu-desayunos',
+    name: 'Desayunos',
+    active: true,
+    companyId: 'empresa-001'
+  },
+  {
+    id: 'menu-almuerzos',
+    name: 'Almuerzos',
+    active: true,
+    companyId: 'empresa-001'
+  },
+  {
+    id: 'menu-meriendas',
+    name: 'Meriendas',
+    active: false,
+    companyId: 'empresa-002'
+  }
+];
+
+const MOCK_CATEGORIES: Category[] = [
+  {
+    id: 'cat-entradas',
+    name: 'Entradas',
+    active: true,
+    companyId: 'empresa-001'
+  },
+  {
+    id: 'cat-bebidas',
+    name: 'Bebidas',
+    active: true,
+    companyId: 'empresa-001'
+  },
+  {
+    id: 'cat-postres',
+    name: 'Postres',
+    active: false,
+    companyId: 'empresa-002'
+  }
+];
+
+const MOCK_PRODUCTS: Product[] = [
+  {
+    id: 'prod-001',
+    name: 'Ceviche Clásico',
+    description: 'Pescado fresco marinado en limón con camote y canchita.',
+    price: 36.5,
+    imageUrl: 'https://placehold.co/300x200?text=Ceviche',
+    active: true,
+    categoryId: 'cat-entradas',
+    menuIds: ['menu-almuerzos'],
+    companyId: 'empresa-001'
+  },
+  {
+    id: 'prod-002',
+    name: 'Limonada de Hierbabuena',
+    description: 'Bebida refrescante preparada al momento.',
+    price: 10.9,
+    imageUrl: 'https://placehold.co/300x200?text=Limonada',
+    active: true,
+    categoryId: 'cat-bebidas',
+    menuIds: ['menu-desayunos', 'menu-almuerzos'],
+    companyId: 'empresa-001'
+  },
+  {
+    id: 'prod-003',
+    name: 'Tiramisú',
+    description: 'Postre italiano con queso mascarpone y café.',
+    price: 18,
+    imageUrl: 'https://placehold.co/300x200?text=Tiramisu',
+    active: false,
+    categoryId: 'cat-postres',
+    menuIds: ['menu-meriendas'],
+    companyId: 'empresa-002'
+  }
+];
+
+const MOCK_USERS: User[] = [
+  {
+    id: 'user-admin-001',
+    email: 'admin@saboresdelmar.com',
+    username: 'Administrador Sabores',
+    role: 'ADMIN',
+    companyId: 'empresa-001',
+    active: true
+  },
+  {
+    id: 'user-001',
+    email: 'caja@saboresdelmar.com',
+    username: 'Usuario Caja',
+    role: 'USER',
+    companyId: 'empresa-001',
+    active: true
+  },
+  {
+    id: 'user-admin-002',
+    email: 'admin@aromaandino.com',
+    username: 'Administrador Aroma',
+    role: 'ADMIN',
+    companyId: 'empresa-002',
+    active: true
+  }
+];
 
 /**
  * Contiene datos simulados para poder visualizar la interfaz
@@ -13,128 +141,30 @@ import { User } from '../models/user.model';
  */
 @Injectable({ providedIn: 'root' })
 export class InMemoryDatabaseService {
-  private readonly companiesSignal = signal<Company[]>([
+  private readonly useMockData = environment.useMockData;
+
+  private readonly companiesSignal = signal<Company[]>([]);
+
+  private readonly menusSignal = signal<Menu[]>([]);
+
+  private readonly categoriesSignal = signal<Category[]>([]);
+
+  private readonly productsSignal = signal<Product[]>([]);
+
+  private readonly rolesSignal = signal<Role[]>([
     {
-      id: 'empresa-001',
-      taxId: 'RUC-001',
-      businessName: 'Restaurante S.A.',
-      commercialName: 'Sabores del Mar',
-      email: 'contacto@saboresdelmar.com',
-      phone: '+503 7890 1111',
-      logoUrl: 'https://placehold.co/120x120?text=Sabores'
+      id: 'role-admin',
+      nombre: 'ADMIN',
+      descripcion: 'Acceso total al panel administrativo.'
     },
     {
-      id: 'empresa-002',
-      taxId: 'RUC-002',
-      businessName: 'Cafetería S.R.L.',
-      commercialName: 'Aroma Andino',
-      email: 'hola@aromaandino.com',
-      phone: '+503 7456 3344',
-      logoUrl: 'https://placehold.co/120x120?text=Aroma'
+      id: 'role-user',
+      nombre: 'USER',
+      descripcion: 'Puede administrar el contenido asignado.'
     }
   ]);
 
-  private readonly menusSignal = signal<Menu[]>([
-    {
-      id: 'menu-desayunos',
-      name: 'Desayunos',
-      active: true,
-      companyId: 'empresa-001'
-    },
-    {
-      id: 'menu-almuerzos',
-      name: 'Almuerzos',
-      active: true,
-      companyId: 'empresa-001'
-    },
-    {
-      id: 'menu-meriendas',
-      name: 'Meriendas',
-      active: false,
-      companyId: 'empresa-002'
-    }
-  ]);
-
-  private readonly categoriesSignal = signal<Category[]>([
-    {
-      id: 'cat-entradas',
-      name: 'Entradas',
-      active: true,
-      companyId: 'empresa-001'
-    },
-    {
-      id: 'cat-bebidas',
-      name: 'Bebidas',
-      active: true,
-      companyId: 'empresa-001'
-    },
-    {
-      id: 'cat-postres',
-      name: 'Postres',
-      active: false,
-      companyId: 'empresa-002'
-    }
-  ]);
-
-  private readonly productsSignal = signal<Product[]>([
-    {
-      id: 'prod-001',
-      name: 'Ceviche Clásico',
-      description: 'Pescado fresco marinado en limón con camote y canchita.',
-      price: 36.5,
-      imageUrl: 'https://placehold.co/300x200?text=Ceviche',
-      categoryId: 'cat-entradas',
-      menuIds: ['menu-almuerzos'],
-      companyId: 'empresa-001'
-    },
-    {
-      id: 'prod-002',
-      name: 'Limonada de Hierbabuena',
-      description: 'Bebida refrescante preparada al momento.',
-      price: 10.9,
-      imageUrl: 'https://placehold.co/300x200?text=Limonada',
-      categoryId: 'cat-bebidas',
-      menuIds: ['menu-desayunos', 'menu-almuerzos'],
-      companyId: 'empresa-001'
-    },
-    {
-      id: 'prod-003',
-      name: 'Tiramisú',
-      description: 'Postre italiano con queso mascarpone y café.',
-      price: 18,
-      imageUrl: 'https://placehold.co/300x200?text=Tiramisu',
-      categoryId: 'cat-postres',
-      menuIds: ['menu-meriendas'],
-      companyId: 'empresa-002'
-    }
-  ]);
-
-  private readonly usersSignal = signal<User[]>([
-    {
-      id: 'user-admin-001',
-      email: 'admin@saboresdelmar.com',
-      username: 'Administrador Sabores',
-      role: 'ADMIN',
-      companyId: 'empresa-001',
-      active: true
-    },
-    {
-      id: 'user-001',
-      email: 'caja@saboresdelmar.com',
-      username: 'Usuario Caja',
-      role: 'USER',
-      companyId: 'empresa-001',
-      active: true
-    },
-    {
-      id: 'user-admin-002',
-      email: 'admin@aromaandino.com',
-      username: 'Administrador Aroma',
-      role: 'ADMIN',
-      companyId: 'empresa-002',
-      active: true
-    }
-  ]);
+  private readonly usersSignal = signal<User[]>([]);
 
   /** Accesos de solo lectura para las señales. */
   readonly companies = this.companiesSignal.asReadonly();
@@ -142,6 +172,13 @@ export class InMemoryDatabaseService {
   readonly categories = this.categoriesSignal.asReadonly();
   readonly products = this.productsSignal.asReadonly();
   readonly users = this.usersSignal.asReadonly();
+  readonly roles = this.rolesSignal.asReadonly();
+
+  constructor() {
+    if (this.useMockData) {
+      this.loadMockCollections();
+    }
+  }
 
   readonly companyCount = computed(() => this.companies().length);
   readonly menuCount = computed(() => this.menus().length);
@@ -222,5 +259,17 @@ export class InMemoryDatabaseService {
 
   removeUser(userId: string): void {
     this.usersSignal.update((list) => list.filter((user) => user.id !== userId));
+  }
+
+  setRoles(roles: Role[]): void {
+    this.rolesSignal.set(structuredClone(roles));
+  }
+
+  private loadMockCollections(): void {
+    this.companiesSignal.set(structuredClone(MOCK_COMPANIES));
+    this.menusSignal.set(structuredClone(MOCK_MENUS));
+    this.categoriesSignal.set(structuredClone(MOCK_CATEGORIES));
+    this.productsSignal.set(structuredClone(MOCK_PRODUCTS));
+    this.usersSignal.set(structuredClone(MOCK_USERS));
   }
 }

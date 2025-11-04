@@ -29,7 +29,7 @@ public class DataInitializer {
                         .taxId("0614-123456-001-9")
                         .businessName("Mi Restaurante, S.A. de C.V.")
                         .commercialName("Mi Restaurante")
-                        .email1("info@resto.test")
+                        .email("info@resto.test")
                         .phone("+503 2222-2222")
                         .logoUrl(null)
                         .build();

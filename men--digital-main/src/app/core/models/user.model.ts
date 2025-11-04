@@ -1,16 +1,11 @@
 /**
- * Roles soportados por la aplicación administrativa.
- */
-export type UserRole = 'ADMIN' | 'USER';
-
-/**
  * Usuario interno que puede acceder al panel administrativo.
  */
 export interface User {
   id: string;
   username: string;
   email: string;
-  role: UserRole;
+  role: string;
   companyId: string;
   active: boolean;
   createdAt?: string;
