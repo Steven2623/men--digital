@@ -8,5 +8,5 @@ export const environment = {
    * Permite trabajar con datos simulados mientras el backend se integra.
    * Cambia a `false` cuando los endpoints estén listos.
    */
-  useMockData: true
+  useMockData: false
 };

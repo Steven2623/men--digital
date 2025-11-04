@@ -18,7 +18,7 @@
           <span>Nombre</span>
           <input type="text" formControlName="name" placeholder="Ej. Ceviche clásico" />
           <small class="form__error" *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched">
-            Ingresa un nombre válido.
+            Ingresa un nombre válido (máximo 120 caracteres).
           </small>
         </label>
 
@@ -26,7 +26,7 @@
           <span>Descripción</span>
           <textarea formControlName="description" placeholder="Describe brevemente el platillo."></textarea>
           <small class="form__error" *ngIf="productForm.get('description')?.invalid && productForm.get('description')?.touched">
-            Describe el producto para tus clientes.
+            Describe el producto para tus clientes (máximo 800 caracteres).
           </small>
         </label>
 
@@ -48,6 +48,15 @@
           </small>
         </label>
 
+        <label class="form__field form__field--checkbox">
+          <span>Estado</span>
+          <div class="toggle">
+            <input type="checkbox" formControlName="active" />
+            <span>{{ productForm.get('active')?.value ? 'Activo' : 'Inactivo' }}</span>
+          </div>
+          <small class="form__hint">Define si el producto estará disponible en los menús seleccionados.</small>
+        </label>
+
         <label class="form__field">
           <span>Categoría</span>
           <select formControlName="categoryId">
@@ -66,12 +75,7 @@
           >
             Selecciona la categoría a la que pertenece el producto.
           </small>
-          <small
-            class="form__error"
-            *ngIf="categoryIdControl.hasError('inactiveCategory') && categoryIdControl.touched"
-          >
-            La categoría seleccionada está inactiva.
-          </small>
+          <p class="form__warning" *ngIf="inactiveCategoryNotice()">{{ inactiveCategoryNotice() }}</p>
         </label>
 
         <fieldset class="form__field form__field--checkbox-group">

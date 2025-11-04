@@ -9,8 +9,13 @@
     <form [formGroup]="loginForm" (ngSubmit)="login()" class="login__form">
       <label>
         <span>Correo electrónico</span>
-        <input type="email" formControlName="username" placeholder="admin@empresa.com" />
-        <small *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+        <input
+            type="email"
+            formControlName="email"
+            placeholder="Correo electrónico"
+            
+          />
+        <small *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
           Ingresa un correo válido.
         </small>
       </label>
@@ -45,7 +50,7 @@
 
     <footer class="login__footer">
       <p>Credenciales de prueba:</p>
-      <p><strong>Correo:</strong> admin@saboresdelmar.com</p>
+      <p><strong>Correo:</strong> admin@resto.test</p>
       <p><strong>Contraseña:</strong> admin123</p>
     </footer>
   </article>

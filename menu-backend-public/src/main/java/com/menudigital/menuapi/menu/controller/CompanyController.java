@@ -1,12 +1,49 @@
 package com.menudigital.menuapi.menu.controller;
-import com.menudigital.menuapi.common.ApiResponse; import com.menudigital.menuapi.menu.domain.Company; import com.menudigital.menuapi.menu.service.CompanyService;
-import lombok.RequiredArgsConstructor; import org.springframework.http.ResponseEntity; import org.springframework.web.bind.annotation.*; import java.util.*;
-@RestController @RequestMapping("/api/companies") @RequiredArgsConstructor
+
+import com.menudigital.menuapi.menu.dto.CompanyRequest;
+import com.menudigital.menuapi.menu.dto.CompanyResponse;
+import com.menudigital.menuapi.menu.service.CompanyService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/api/companies")
+@RequiredArgsConstructor
 public class CompanyController {
-  private final CompanyService service;
-  @GetMapping public ResponseEntity<ApiResponse<java.util.List<Company>>> list(){ return ResponseEntity.ok(ApiResponse.ok(service.list())); }
-  @GetMapping("/{id}") public ResponseEntity<ApiResponse<Company>> get(@PathVariable UUID id){ return ResponseEntity.ok(ApiResponse.ok(service.get(id))); }
-  @PostMapping public ResponseEntity<ApiResponse<Company>> create(@RequestBody Company c){ return ResponseEntity.ok(ApiResponse.ok(service.create(c))); }
-  @PutMapping("/{id}") public ResponseEntity<ApiResponse<Company>> update(@PathVariable UUID id,@RequestBody Company c){ return ResponseEntity.ok(ApiResponse.ok(service.update(id,c))); }
-  @DeleteMapping("/{id}") public ResponseEntity<ApiResponse<String>> delete(@PathVariable UUID id){ service.delete(id); return ResponseEntity.ok(ApiResponse.msg("Deleted")); }
+
+    private final CompanyService service;
+
+    @GetMapping
+    public List<CompanyResponse> list() {
+        return service.list().stream().map(CompanyResponse::from).toList();
+    }
+
+    @GetMapping("/{id}")
+    public CompanyResponse get(@PathVariable UUID id) {
+        return CompanyResponse.from(service.get(id));
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public CompanyResponse create(@Valid @RequestBody CompanyRequest request) {
+        var company = request.toEntity();
+        return CompanyResponse.from(service.create(company));
+    }
+
+    @PutMapping("/{id}")
+    public CompanyResponse update(@PathVariable UUID id, @Valid @RequestBody CompanyRequest request) {
+        var company = request.toEntity();
+        return CompanyResponse.from(service.update(id, company));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable UUID id) {
+        service.delete(id);
+    }
 }

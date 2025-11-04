@@ -4,6 +4,6 @@ import java.time.Instant; import java.util.UUID;
 @Entity @Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class Company {
   @Id @GeneratedValue(strategy=GenerationType.UUID) private UUID id;
-  private String taxId; private String businessName; private String commercialName; private String email1; private String phone; private String logoUrl;
+  private String taxId; private String businessName; private String commercialName; private String email; private String phone; private String logoUrl;
   @CreationTimestamp private Instant createdAt; @UpdateTimestamp private Instant updatedAt;
 }
