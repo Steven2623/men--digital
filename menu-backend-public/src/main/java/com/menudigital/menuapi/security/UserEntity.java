@@ -16,5 +16,15 @@ public class UserEntity {
   @JoinColumn(name = "company_id")
   private Company company;
   @Column(name="activo",nullable=false) private boolean active=true;
+  @Column(name="nombre",nullable=false,unique=true,length=60) private String username;
+  @Column(name="contrasena",nullable=false) private String passwordHash;
+  @Column(name="correo",nullable=false,length=120) private String email;
+  @ManyToOne(optional=false)
+  @JoinColumn(name = "role_id")
+  private Role role;
+  @ManyToOne(optional=false) 
+  @JoinColumn(name = "company_id")
+  private Company company;
+  @Column(name="activo",nullable=false) private boolean active=true;
   @CreationTimestamp private Instant createdAt; @UpdateTimestamp private Instant updatedAt;
 }

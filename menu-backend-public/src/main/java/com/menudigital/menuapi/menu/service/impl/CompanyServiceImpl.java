@@ -9,4 +9,6 @@ public class CompanyServiceImpl implements CompanyService {
   public Company create(Company c){ return repo.save(c); }
   public Company update(UUID id, Company c){ var db=get(id); db.setTaxId(c.getTaxId()); db.setBusinessName(c.getBusinessName()); db.setCommercialName(c.getCommercialName()); db.setEmail(c.getEmail()); db.setPhone(c.getPhone()); db.setLogoUrl(c.getLogoUrl()); return repo.save(db); }
   public void delete(UUID id){ repo.deleteById(id); }
+  public Company update(UUID id, Company c){ var db=get(id); db.setTaxId(c.getTaxId()); db.setBusinessName(c.getBusinessName()); db.setCommercialName(c.getCommercialName()); db.setEmail(c.getEmail()); db.setPhone(c.getPhone()); db.setLogoUrl(c.getLogoUrl()); return repo.save(db); }
+  public void delete(UUID id){ repo.deleteById(id); }
 }

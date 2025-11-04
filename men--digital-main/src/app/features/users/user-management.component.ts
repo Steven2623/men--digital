@@ -5,7 +5,9 @@ import { FormBuilder, ReactiveFormsModule, ValidatorFn, Validators } from '@angu
 import { AuthService } from '../../core/services/auth.service';
 import { CompanyService } from '../../core/services/company.service';
 import { RoleService } from '../../core/services/role.service';
+import { RoleService } from '../../core/services/role.service';
 import { UserService } from '../../core/services/user.service';
+import { User } from '../../core/models/user.model';
 import { User } from '../../core/models/user.model';
 import { EMAIL_REGEX } from '../../core/constants/validation.constants';
 
@@ -22,9 +24,11 @@ export class UserManagementComponent {
   private readonly companyService = inject(CompanyService);
   private readonly authService = inject(AuthService);
   private readonly roleService = inject(RoleService);
+  private readonly roleService = inject(RoleService);
 
   readonly users = this.userService.users;
   readonly companies = this.companyService.companies;
+  readonly roles = this.roleService.roles;
   readonly roles = this.roleService.roles;
 
   readonly selectedUserId = signal<string | null>(null);
@@ -32,6 +36,9 @@ export class UserManagementComponent {
   readonly feedbackMessage = signal<string | null>(null);
 
   readonly userForm = this.fb.nonNullable.group({
+    username: ['', [Validators.required, Validators.maxLength(80)]],
+    email: ['', [Validators.required, Validators.pattern(EMAIL_REGEX)]],
+    role: this.fb.nonNullable.control('', Validators.required),
     username: ['', [Validators.required, Validators.maxLength(80)]],
     email: ['', [Validators.required, Validators.pattern(EMAIL_REGEX)]],
     role: this.fb.nonNullable.control('', Validators.required),
@@ -44,6 +51,12 @@ export class UserManagementComponent {
     const companyId = this.authService.currentUser()?.companyId;
     this.companyService.load().subscribe();
     this.userService.load(companyId).subscribe();
+    this.roleService.load().subscribe((roles) => {
+      const roleControl = this.userForm.get('role');
+      if (!this.selectedUserId() && roles.length && !roleControl?.value) {
+        roleControl?.setValue(roles[0].nombre);
+      }
+    });
     this.roleService.load().subscribe((roles) => {
       const roleControl = this.userForm.get('role');
       if (!this.selectedUserId() && roles.length && !roleControl?.value) {
@@ -86,6 +99,7 @@ export class UserManagementComponent {
       email: '',
       email: '',
       username: '',
+      role: this.roles()[0]?.nombre ?? '',
       role: this.roles()[0]?.nombre ?? '',
       companyId: this.authService.currentUser()?.companyId ?? '',
       active: true,
