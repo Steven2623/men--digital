@@ -1,89 +1,136 @@
-#  Menú Digital — Incremento Frontend
+# Proyecto: Dockerización y Primer Incremento del Sistema
 
-Interfaz administrativa desarrollada en **Angular 17+** para gestionar menús digitales multiempresa. Este incremento se centra en las vistas del administrador y deja listos los puntos de integración con el backend (Spring/Node) y la base de datos Neon PostgreSQL.
+## Descripción General
+Este proyecto corresponde al primer incremento funcional del Sistema de Gestión de Menús  El objetivo es permitir la administración centralizada de:
+- Empresas
+- Usuarios
+- Menús
+- Categorías
+- Productos
 
-##  Contenido del repositorio
+Todo el sistema se encuentra dockerizado para permitir su puesta en marcha mediante un solo comando utilizando **Docker Compose**, asegurando portabilidad, estandarización e independencia de configuraciones locales.
 
-- `men--digital-main/`: código fuente de la aplicación Angular, Docker y scripts auxiliares.
-- `package.json`: marcador del workspace raíz (no contiene dependencias).
+---
 
-> Sitúate dentro de `men--digital-main/` para ejecutar cualquier comando de desarrollo.
+## Tecnologías Utilizadas
 
-##  Funcionalidades incluidas
+| Capa | Tecnología |
+|------|------------|
+| Frontend | React + Vite, JavaScript, CSS Modules |
+| Backend | Java 17, Spring Boot, Spring Security, Spring Data JPA |
+| Base de Datos | PostgreSQL (Imagen oficial Docker) |
+| Contenedores | Docker |
+| Orquestación | Docker Compose |
+| Control de Versiones | Git / GitHub |
 
-- **Inicio de sesión** con selección de empresa y manejo de sesión mediante JWT (mock en esta versión).
-- **Panel de control** con métricas generales de categorías, productos y usuarios.
-- **Gestión de categorías**: crear, editar, activar/inactivar y eliminar.
-- **Gestión de menús**: crear, editar, activar/inactivar y eliminar.
-- **Gestión de productos/platillos**: CRUD completo con relación a categorías y menús, además de vista previa de precios.
-- **Gestión de usuarios**: creación de administradores/usuarios, asignación de empresa y control de estado.
-- **Gestión de empresas**: mantenimiento del catálogo de negocios (RUC, razón social, logo, etc.).
+---
 
-##  Estructura relevante
+## Incremento Frontend (Interfaz Administrativa)
 
+### Descripción
+El frontend es una aplicación desarrollada en **React + Vite**, orientada a la gestión operativa desde una interfaz administrativa. La aplicación se comunica con el backend mediante solicitudes HTTP y utiliza token JWT para mantener la sesión activa.
+
+### Contenido del Repositorio
 ```
-src/
-├── app/
-│   ├── core/        # Modelos, servicios y guard de autenticación
-│   ├── features/    # Componentes de login y módulos administrativos
-│   └── styles/      # Estilos compartidos para las pantallas de gestión
-└── environments/    # Configuración (API base y uso de mocks)
+men--digital-main/
+├── src/
+│   ├── auth/          # Módulos de autenticación y control de acceso
+│   ├── services/      # Llamadas a la API REST
+│   ├── components/    # Componentes reutilizables
+│   ├── views/         # Pantallas CRUD del sistema
+│   └── styles/        # Estilos globales
+├── Dockerfile          # Imagen Docker del frontend
+└── vite.config.js
 ```
 
-## 🔐 Datos de prueba
+### Funcionalidades Incluidas
+- Inicio de sesión con token JWT.
+- Panel general de administración.
+- CRUD completo de **Empresas**, **Usuarios**, **Menús**, **Categorías** y **Productos**.
+- Control de roles y acceso restringido mediante guardias de rutas.
 
-Mientras `environment.useMockData = true`, puedes acceder con las siguientes credenciales:
+### Configuración del Backend en el Frontend
+Archivo:
+```
+men--digital-main/src/config/api.js
+```
+Valor inicial sugerido:
+```js
+export const API_BASE_URL = "http://localhost:8080";
+```
 
-- **Correo:** `admin@saboresdelmar.com`
-- **Contraseña:** `admin123`
-- **Empresa:** `Sabores del Mar`
+---
 
-> Cambia `useMockData` a `false` cuando el backend esté operativo. Todos los servicios HTTP (`AuthService`, `CategoryService`, etc.) ya apuntan a los endpoints REST esperados.
+## Incremento Backend (API REST)
 
-##  Puesta en marcha
+### Descripción
+El backend fue desarrollado utilizando **Spring Boot**, proporcionando los servicios REST necesarios para la gestión del sistema. Se implementa autenticación con **JWT** y acceso a la base de datos mediante **JPA**.
 
-### Requisitos
+### Contenido del Repositorio
+```
+menu-backend-public/
+├── controller/     # Endpoints REST
+├── service/        # Lógica de negocio
+├── repository/     # Acceso a datos
+├── entity/         # Modelado de tablas
+├── security/       # Autenticación y autorización con JWT
+├── resources/
+│   └── application.yml
+└── Dockerfile       # Imagen Docker del backend
+```
 
-- Node.js 20+
-- npm 10+
-- Angular CLI 
+### Funcionalidades Implementadas
+| Módulo | Funcionalidad |
+|--------|--------------|
+| Autenticación | Inicio de sesión y validación mediante JWT |
+| Empresas | CRUD completo |
+| Usuarios | CRUD con control de rol y estado |
+| Menús | CRUD vinculado a empresa |
+| Categorías | CRUD vinculado a menús |
+| Productos | CRUD vinculado a categorías |
 
-### Pasos rápidos
+---
 
+## Base de Datos
+- Motor: **PostgreSQL**
+- Tablas generadas mediante entidades JPA
+- Persistencia garantizada utilizando volúmenes Docker
+
+---
+
+## Dockerización del Sistema
+
+El archivo principal para levantar todo el sistema es:
+```
+docker-compose.yml
+```
+
+### Levantar el Proyecto
 ```bash
-cd men--digital-main/
-npm install
-npm start
+git clone -b main --single-branch https://github.com/Steven2623/men--digital.git
+
+cd men--digital
+
+docker compose up --build
 ```
 
-El servidor de Angular se iniciará en `http://localhost:4200`. Para cambiar el puerto puedes usar `ng serve --port 80` o actualizar la configuración de Docker descrita abajo.
+### Acceso a los Servicios
 
-### Otros comandos útiles
+| Servicio | URL |
+|---------|------|
+| Frontend | http://localhost:4200 |
+| Backend | http://localhost:8080 |
+| PostgreSQL | localhost:5432 |
 
-- `npm run build`: genera la versión de producción en `dist/`.
-- `npm test`: ejecuta las pruebas unitarias configuradas con Karma/Jasmine.
 
-##  Configuración de entornos
+## Resultado del Incremento
 
-El frontend toma la URL base del backend desde `src/environments/environment*.ts`:
+| Elemento | Estado | Descripción |
+|---------|--------|-------------|
+| Frontend | Completo | Interfaz administrativa funcional |
+| Backend |  Completo | API REST operativa y protegida |
+| Base de Datos |  Configurada | Persistencia estable y estructurada |
+| Dockerización |  Finalizada | El sistema se ejecuta con un solo comando |
 
-```ts
-export const environment = {
-  production: false,
-  apiBaseUrl: 'http://localhost:3000/api',
-  useMockData: true
-};
-```
-
-- Actualiza `apiBaseUrl` con el endpoint del backend.
-- Cambia `useMockData` a `false` para consumir datos reales.
-
-##  Próximas implementaciones
-
-1. Conectar los servicios Angular con los endpoints del backend (Spring Security + JWT).
-2. Añadir interceptores para adjuntar el token JWT en cada petición HTTP.
-3. Sustituir el mock de autenticación por el flujo real (registro, activación y login).
-4. Añadir validaciones backend y mensajes de error detallados en la UI.
-
-Revisa cada servicio en `src/app/core/services` para conocer el contrato esperado por la API.
+---
 
