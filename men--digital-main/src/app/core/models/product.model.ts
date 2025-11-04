@@ -7,6 +7,7 @@ export interface Product {
   description: string;
   price: number;
   imageUrl: string;
+  active: boolean;
   categoryId: string;
   menuIds: string[];
   companyId: string;
